@@ -30,7 +30,7 @@ Server running at http://127.0.0.1:1337/
 # Run tests
 
 ``` console
-$ ./run-tests.sh
+$ make test
 [ok] launched test server at http://127.0.0.1:32457 with pid 19308
 Server running at http://127.0.0.1:32457
 [ok] pushed zip file

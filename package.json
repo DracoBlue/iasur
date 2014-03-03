@@ -3,7 +3,7 @@
   "description": "A server to store the contents of zip files as folders on the file system and expose an url to access the content.",
   "main": "iasur_server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test"
   },
   "bin" : { "iasur" : "./iasur_server.js" },
   "dependencies": {
