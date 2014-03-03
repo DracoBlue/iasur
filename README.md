@@ -3,6 +3,7 @@
 A very thin web and api based file upload and destribution service.
 
 * Version: 0.1-dev
+* Build-Status: [![Build Status](https://travis-ci.org/DracoBlue/iasur.png?branch=master)](https://travis-ci.org/DracoBlue/iasur)
 * Date: Not yet released
 * Official Site: http://dracoblue.net/
 
