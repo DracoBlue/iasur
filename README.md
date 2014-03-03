@@ -22,9 +22,19 @@ $ npm install
 
 Run the server with:
 
-```
-$ node iasur_server.js http://127.0.0.1:1337
+``` console
+$ ./iasur_server.js http://127.0.0.1:1337/
 Server running at http://127.0.0.1:1337/
+```
+
+# Run tests
+
+``` console
+$ ./run-tests.sh
+[ok] launched test server at http://127.0.0.1:32457 with pid 19308
+Server running at http://127.0.0.1:32457
+[ok] pushed zip file
+[ok] pushed 2 files
 ```
 
 # License

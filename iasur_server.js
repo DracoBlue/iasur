@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var AdmZip = require('adm-zip');
 var express = require('express');
 var uuid = require('node-uuid');
