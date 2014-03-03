@@ -1,0 +1,18 @@
+{
+  "name": "iasur",
+  "description": "A server to store the contents of zip files as folders on the file system and expose an url to access the content.",
+  "main": "iasur_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin" : { "iasur" : "./iasur_server.js" },
+  "dependencies": {
+      "adm-zip": "=>4.4.0 <4.5.0",
+      "express": "3.x",
+      "node-uuid": "=>1.4.1 <1.5.0",
+      "formidable": "=>1.0.14 <1.1.0"
+  },
+  "repository": "https://github.com/DracoBlue/iasur.git",
+  "author": "DracoBlue",
+  "license": "MIT"
+}
