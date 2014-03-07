@@ -40,9 +40,21 @@ app.use(function (req, res, next) {
 
     if (req.method.toUpperCase() == 'POST')
     {
+        var all_files = {};
+
+        form.addListener('file', function(file_name, file) {
+            if (typeof all_files[file_name] === "undefined")
+            {
+                all_files[file_name] = [];
+            }
+
+            all_files[file_name].push(file);
+        });
+
         form.parse(req, function (err, fields, files)
         {
-            req.files = files;
+            req.files = all_files;
+            req.fields = fields;
             next();
         });
     }
@@ -115,7 +127,7 @@ app.post('/zip-files', function (req, res)
         return;
     }
 
-    var zip = new AdmZip(raw_files.file.path);
+    var zip = new AdmZip(raw_files.file[0].path);
     var entries = zip.getEntries();
 
     if (!entries.length)
@@ -136,7 +148,7 @@ app.post('/zip-files', function (req, res)
 
     zip.extractAllTo(base_folders_folder + folder_id, true);
 
-    createIndexFileAndRedirect(folder_id, {"entries": file_names}, req, res);
+    createIndexFileAndRedirect(folder_id, {"entries": file_names, "title": req.fields.title, "description": req.fields.description}, req, res);
 });
 
 app.get('/files/:id', function(req, res)
@@ -151,24 +163,16 @@ app.get('/files/:id', function(req, res)
 
 app.post('/files', function (req, res)
 {
-    var raw_files = req.files;
-
-    var folder_id = uuid.v4();
-
-    var files = [];
-    var file_names = [];
-
-    for (var file_name in raw_files) {
-        if (raw_files.hasOwnProperty(file_name)) {
-            files.push(raw_files[file_name]);
-        }
-    }
-
-    if (!files.length) {
+    /* FIXME: we have some problems, if we have no times. This check needs to be fixed! */
+    if (!req.files.files || !req.files.files.length) {
         res.setHeader('Content-Type', 'text/plain');
         res.send('No file given!');
         return;
     }
+
+    var files = req.files.files;
+    var folder_id = uuid.v4();
+    var file_names = [];
 
     fs.mkdirSync(base_folders_folder + folder_id);
 
@@ -178,7 +182,7 @@ app.post('/files', function (req, res)
         fs.createReadStream(file.path).pipe(fs.createWriteStream(base_folders_folder + folder_id + '/' + path.basename(file.name)));
     });
 
-    createIndexFileAndRedirect(folder_id, {"entries": file_names}, req, res);
+    createIndexFileAndRedirect(folder_id, {"entries": file_names, "title": req.fields.title, "description": req.fields.description}, req, res);
 });
 
 app.use('/folders', express.static(base_folders_folder));
