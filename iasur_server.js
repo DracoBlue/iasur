@@ -156,8 +156,7 @@ app.get('/files/:id', function(req, res)
     fs.readFile(base_index_files_folder + '/' + req.params.id + '.json', function (err, data) {
         /* FIXME: handle err */
         data = JSON.parse(data.toString());
-        res.send('file: ' + req.params.id + ' data: ' + JSON.stringify(data));
-        res.end();
+        res.render('files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur", "_tab": "zip" });
     });
 })
 

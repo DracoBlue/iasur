@@ -1,0 +1,20 @@
+{% include "_header.twig" %}
+          <div class="inner cover">
+              {% if title is defined %}
+            <h1 class="cover-heading">{{ title }}</h1>
+              {% endif %}
+              {% if description is defined %}
+            <p class="lead">{{ description }}</p>
+              {% endif %}
+          </div>
+
+<ul class="entries">
+{% for entry in entries %}
+    <li>
+        <a href="{{ folder_base_url }}{{ entry }}">{{ entry }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% include "_footer.twig" %}
+

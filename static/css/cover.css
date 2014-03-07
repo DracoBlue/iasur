@@ -163,3 +163,7 @@ form {
         width: 700px;
     }
 }
+
+.entries {
+    text-align: left;
+}
