@@ -116,19 +116,27 @@ app.post('/zip-files', function (req, res)
     }
 
     var zip = new AdmZip(raw_files.file.path);
+    var entries = zip.getEntries();
 
-    if (!zip.getEntries().length)
+    if (!entries.length)
     {
         res.setHeader('Content-Type', 'text/plain');
         res.send('The zip file is empty');
         return;
     }
 
+    var file_names = [];
+
+    entries.forEach(function(entry)
+    {
+       file_names.push(entry.name);
+    });
+
     var folder_id = uuid.v4();
 
     zip.extractAllTo(base_folders_folder + folder_id, true);
 
-    createIndexFileAndRedirect(folder_id, {}, req, res);
+    createIndexFileAndRedirect(folder_id, {"entries": file_names}, req, res);
 });
 
 app.get('/files/:id', function(req, res)
@@ -148,6 +156,7 @@ app.post('/files', function (req, res)
     var folder_id = uuid.v4();
 
     var files = [];
+    var file_names = [];
 
     for (var file_name in raw_files) {
         if (raw_files.hasOwnProperty(file_name)) {
@@ -165,10 +174,11 @@ app.post('/files', function (req, res)
 
     files.forEach(function (file)
     {
+        file_names.push(path.basename(file.name));
         fs.createReadStream(file.path).pipe(fs.createWriteStream(base_folders_folder + folder_id + '/' + path.basename(file.name)));
     });
 
-    createIndexFileAndRedirect(folder_id, {}, req, res);
+    createIndexFileAndRedirect(folder_id, {"entries": file_names}, req, res);
 });
 
 app.use('/folders', express.static(base_folders_folder));
