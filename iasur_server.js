@@ -6,6 +6,7 @@ var fs = require("fs");
 var path = require("path");
 var url = require("url");
 var formidable = require('formidable');
+var twig = require("twig");
 
 var app = express();
 
@@ -19,6 +20,15 @@ if (process.argv.length < 3)
 var base_url = process.argv[2];
 var base_folders_folder = __dirname + '/folders/';
 var base_folders_url = base_url + 'folders/';
+var base_index_files_folder = __dirname + '/files/';
+var base_index_files_url = base_url + 'files/';
+
+app.set('view engine', 'twig');
+
+app.set("twig options", {
+    strict_variables: false
+});
+
 
 app.use(function (req, res, next) {
     res.setHeader('X-Powered-By', 'iasur');
@@ -44,9 +54,55 @@ app.use(function (req, res, next) {
 
 app.get('/', function (req, res)
 {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({"http://dracoblue.net/iasur/rels/zip-files": base_url + '/zip-files', "http://dracoblue.net/iasur/rels/files": base_url + '/files'}));
+    var content_type = req.accepts(['html', 'json']);
+
+    if (content_type == 'json')
+    {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({"http://dracoblue.net/iasur/rels/zip-files": base_url + '/zip-files', "http://dracoblue.net/iasur/rels/files": base_url + '/files'}));
+    }
+    else
+    {
+        res.setHeader('Location', '/upload/zip');
+        res.statusCode = 301;
+        res.end();
+    }
 });
+
+app.get('/upload/zip', function (req, res)
+{
+    var content_type = req.accepts(['html', 'json']);
+
+    res.render('upload_zip', { "title": "Choose your file", "_title": "Upload one .zip / iasur", "_tab": "zip" });
+});
+
+app.get('/upload/files', function (req, res)
+{
+    var content_type = req.accepts(['html', 'json']);
+
+    res.render('upload_files', { "title": "Choose your files", "_title": "Upload files / iasur", "_tab": "files" });
+});
+
+var createIndexFileAndRedirect = function(folder_id, options, req, res)
+{
+    fs.writeFile(base_index_files_folder + '/' + folder_id + '.json', JSON.stringify(options), function (err) {
+        /* FIXME: handle err */
+
+        var content_type = req.accepts(['html', 'json']);
+
+        if (content_type == 'json')
+        {
+            res.statusCode = 201;
+        }
+        else
+        {
+            res.statusCode = 301;
+        }
+
+        res.setHeader('Location', base_index_files_url + folder_id);
+        res.end();
+    });
+};
 
 app.post('/zip-files', function (req, res)
 {
@@ -72,10 +128,18 @@ app.post('/zip-files', function (req, res)
 
     zip.extractAllTo(base_folders_folder + folder_id, true);
 
-    res.statusCode = 201;
-    res.setHeader('Location', base_folders_url + folder_id);
-    res.end();
+    createIndexFileAndRedirect(folder_id, {}, req, res);
 });
+
+app.get('/files/:id', function(req, res)
+{
+    fs.readFile(base_index_files_folder + '/' + req.params.id + '.json', function (err, data) {
+        /* FIXME: handle err */
+        data = JSON.parse(data.toString());
+        res.send('file: ' + req.params.id + ' data: ' + JSON.stringify(data));
+        res.end();
+    });
+})
 
 app.post('/files', function (req, res)
 {
@@ -104,12 +168,11 @@ app.post('/files', function (req, res)
         fs.createReadStream(file.path).pipe(fs.createWriteStream(base_folders_folder + folder_id + '/' + path.basename(file.name)));
     });
 
-    res.statusCode = 201;
-    res.setHeader('Location', base_folders_url + folder_id);
-    res.end();
+    createIndexFileAndRedirect(folder_id, {}, req, res);
 });
 
 app.use('/folders', express.static(base_folders_folder));
+app.use('/static', express.static(__dirname + '/static'));
 
 var url_parts = url.parse(base_url);
 
