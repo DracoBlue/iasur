@@ -162,14 +162,24 @@ app.get('/files/:id', function(req, res)
 
 app.post('/files', function (req, res)
 {
-    /* FIXME: we have some problems, if we have no times. This check needs to be fixed! */
-    if (!req.files.files || !req.files.files.length) {
+    var files = [];
+
+    for (key in req.files)
+    {
+        if (req.files.hasOwnProperty(key))
+        {
+            req.files[key].forEach(function(sub_file) {
+                files.push(sub_file);
+            });
+        }
+    }
+
+    if (!files.length) {
         res.setHeader('Content-Type', 'text/plain');
         res.send('No file given!');
         return;
     }
 
-    var files = req.files.files;
     var folder_id = uuid.v4();
     var entries = [];
 
