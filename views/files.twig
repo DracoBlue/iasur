@@ -1,20 +1,22 @@
 {% include "_header.twig" %}
           <div class="inner cover">
               {% if title is defined %}
-            <h1 class="cover-heading">{{ title }}</h1>
+            <h1 class="cover-heading">{{ title | escape }}</h1>
               {% endif %}
               {% if description is defined %}
-            <p class="lead">{{ description }}</p>
+            <p class="lead">{{ description | escape  }}</p>
               {% endif %}
           </div>
 
-<ul class="entries">
-{% for entry in entries %}
-    <li>
-        <a href="{{ folder_base_url }}{{ entry }}">{{ entry }}</a>
-    </li>
-{% endfor %}
-</ul>
+<table class="table">
+    {% for entry in entries %}
+    <tr>
+        <td>{{ entry.name | escape }}</td>
+        <td>{{ entry.size | escape }} bytes</td>
+        <td><a href="{{ folder_base_url | escape }}{{ entry.name | escape }}">Download</a></td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% include "_footer.twig" %}
 
