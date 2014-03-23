@@ -88,7 +88,7 @@ Server running at http://127.0.0.1:32457/
 
 ## Changelog
 
-* dev
+* 1.1.0 (2014/03/23)
   - use local folder `./views` as local theme
   - made views, files and folders relative to `process.cwd()` #1
 * 1.0.0 (2014/03/23)
