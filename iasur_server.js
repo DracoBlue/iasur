@@ -9,28 +9,82 @@ var formidable = require('formidable');
 var twig = require("twig");
 
 var app = express();
-
-if (process.argv.length < 3)
-{
-    console.error('Correct usage: ' + process.argv[0] + ' ' + process.argv[1] + ' http://127.0.0.1:1337/');
-    process.exit(1);
-    return ;
-}
-
-var config = {};
 var base_directory = process.cwd();
-
-if (fs.existsSync(base_directory + '/config.json'))
-{
-    config = JSON.parse(fs.readFileSync(base_directory + '/config.json').toString() || '{}');
-}
-
-var base_url = process.argv[2];
 var base_folders_folder = base_directory + '/folders/';
 var base_folders_url = base_url + 'folders/';
 var base_index_files_folder = base_directory + '/files/';
 var base_index_files_url = base_url + 'files/';
-config.theme = config.theme || 'default';
+
+var iasur_version = 'dev';
+
+if (fs.existsSync(__dirname + '/package.json'))
+{
+    var package_info = JSON.parse(fs.readFileSync(__dirname + '/package.json').toString() || '{}');
+    iasur_version = package_info.version || iasur_version;
+}
+
+if (process.argv[2] == 'create')
+{
+    console.info('Initializing folder for iasur:');
+    console.info(' - folders: ' + base_folders_folder);
+    if (!fs.existsSync(base_folders_folder))
+    {
+        fs.mkdirSync(base_folders_folder);
+    }
+    console.info(' - files: ' + base_index_files_folder);
+    if (!fs.existsSync(base_index_files_folder))
+    {
+        fs.mkdirSync(base_index_files_folder);
+    }
+    console.info('Done!');
+    console.info('');
+    console.info('Serve folder with: ' + process.argv[0] + ' ' + process.argv[1] + ' serve http://127.0.0.1:1337/');
+    process.exit(0);
+    return ;
+}
+else if (process.argv[2] == 'enable-theming')
+{
+    console.info('Initializing ./views folder for iasur:');
+
+    if (!fs.existsSync(base_directory + '/views'))
+    {
+        fs.mkdirSync(base_directory + '/views');
+        var files = ['_footer', '_header', 'files', 'upload_files', 'upload_zip'];
+        files.forEach(function(file) {
+            console.info(' - ./views/' + file + '.twig');
+            fs.writeFileSync(base_directory + '/views/' + file + '.twig',fs.readFileSync(__dirname + '/views/' + file + '.twig').toString());
+        });
+    }
+    else
+    {
+        console.error('There is already a ./views folder! Remove it, if you really want to create from scratch!');
+    }
+
+    console.info('Done!');
+    process.exit(0);
+    return ;
+}
+else if (process.argv[2] == 'serve' && process.argv.length < 4)
+{
+    console.error('Correct usage: ' + process.argv[0] + ' ' + process.argv[1] + ' serve http://127.0.0.1:1337/');
+    process.exit(1);
+    return ;
+}
+else if (process.argv.length < 3)
+{
+    console.error('iasur ' + iasur_version);
+    console.error('');
+    console.error(' Create a new iasur project at current folder:');
+    console.error('   ' + process.argv[0] + ' ' + process.argv[1] + ' create');
+    console.error(' Set up theming (in ./views/ folder)');
+    console.error('   ' + process.argv[0] + ' ' + process.argv[1] + ' enable-theming');
+    console.error(' Serve the current folder as iasur folder:');
+    console.error('   ' + process.argv[0] + ' ' + process.argv[1] + ' serve http://127.0.0.1:1337/');
+    process.exit(1);
+    return ;
+}
+
+var base_url = process.argv[3];
 
 app.set('view engine', 'twig');
 
@@ -103,14 +157,14 @@ app.get('/upload/zip', function (req, res)
 {
     var content_type = req.accepts(['html', 'json']);
 
-    res.render('themes/' + config.theme + '/upload_zip', { "title": "Choose your file", "_title": "Upload one .zip / iasur", "_tab": "zip" });
+    res.render('upload_zip', { "title": "Choose your file", "_title": "Upload one .zip / iasur", "_tab": "zip" });
 });
 
 app.get('/upload/files', function (req, res)
 {
     var content_type = req.accepts(['html', 'json']);
 
-    res.render('themes/' + config.theme + '/upload_files', { "title": "Choose your files", "_title": "Upload files / iasur", "_tab": "files" });
+    res.render('upload_files', { "title": "Choose your files", "_title": "Upload files / iasur", "_tab": "files" });
 });
 
 var createIndexFileAndRedirect = function(folder_id, options, req, res)
@@ -181,7 +235,7 @@ app.get('/files/:id', function(req, res)
         }
 
         data = JSON.parse(data.toString());
-        res.render('themes/' + config.theme + '/files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur" });
+        res.render('files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur" });
     });
 })
 

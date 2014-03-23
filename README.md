@@ -10,40 +10,65 @@ iasur is copyright 2014 by DracoBlue http://dracoblue.net
 
 ## Installation
 
-Installation will be available via npm. So long use the latest version from git.
+Install from npm (global):
+
+``` console
+$ sudo npm install -g iasur
+```
+
+or local:
+
+``` console
+$ npm install iasur
+```
+
+You might fetch the latest version from git:
 
 ``` console
 $ git clone https://github.com/DracoBlue/iasur.git iasur
 $ cd iasur
-$ npm install
+$ npm install #to fetch dependencies
 ```
 
 ## Usage
 
-Run the server with:
+Initialize the server directory with:
 
 ``` console
-$ ./iasur_server.js http://127.0.0.1:1337/
+$ mkdir project
+$ cd project
+$ iasur create
+Initializing folder for iasur:
+ - folders: /home/you/project/folders/
+ - files: /home/you/project/files/
+Done!
+
+Serve folder with: /usr/local/bin/iasur serve http://127.0.0.1:1337/
+```
+
+and thens serve the directory:
+
+``` console
+$ iasur serve http://127.0.0.1:1337/
 Server running at http://127.0.0.1:1337/
 ```
 
-## Custom Name / Footer
+## Enable theming
 
-Modify `views/themes/default/{_header.twig,_footer.twig}` or create your own theme.
+If you want to have a custom theme for your iasur server, run:
 
-## Custom Theme
-
-If you want to use/make a custom theme, copy the folder `views/themes/default` to `views/themes/mytheme`.
-
-Modify the files.
-
-Configure to run your theme, by adding a `config.json` to the iasur folder:
-
+``` console
+$ iasur enable-theming
+Initializing ./views folder for iasur:
+ - ./views/_footer.twig
+ - ./views/_header.twig
+ - ./views/files.twig
+ - ./views/upload_files.twig
+ - ./views/upload_zip.twig
+Done!
 ```
-{
-  "theme": "mytheme"
-}
-```
+
+Now you can modify the files at `./views/{_header.twig,_footer.twig}` to modify the header and footer.
 
 That's it!
 
@@ -64,7 +89,8 @@ Server running at http://127.0.0.1:32457/
 ## Changelog
 
 * dev
-  - made views, files and folders relative to `process.cwd()`
+  - use local folder `./views` as local theme
+  - made views, files and folders relative to `process.cwd()` #1
 * 1.0.0 (2014/03/23)
   - added option to create a theme
   - initial release
