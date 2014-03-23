@@ -39,6 +39,15 @@ echo "- push zip file (json)"
 curl_request 201 application/json -X POST -F file=@tests/fixtures/hans.zip $BASE_URL/zip-files
 
 
+RAW_CREATED_URL=`curl -v -H "Accept: application/json" -H 'Expect: ' -sS -X POST -F file=@tests/fixtures/hans.zip $BASE_URL/zip-files 2>&1 | grep -E '^< Location: ' | head -n 1 | cut -f '3' -d ' '`
+
+# for unknown reason, at the end of the RAW_CREATED_URL is a control character,
+# that's why we have to get the substring BEFORE this control character
+# found on macosx with curl 7.33.0
+CREATED_URL=`echo "${RAW_CREATED_URL:0:65}"`
+
+curl_request 200 application/json -X GET $CREATED_URL
+
 kill -9 $PID
 echo "- killed server at pid $PID"
 echo ""

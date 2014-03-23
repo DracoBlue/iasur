@@ -32,10 +32,14 @@ Server running at http://127.0.0.1:1337/
 
 ``` console
 $ make test
-[ok] launched test server at http://127.0.0.1:32457 with pid 19308
-Server running at http://127.0.0.1:32457
-[ok] pushed zip file
-[ok] pushed 2 files
+Execute all Tests
+- launched test server at http://127.0.0.1:32457 with pid 38995
+Server running at http://127.0.0.1:32457/
+- push 2 files (html)
+- push zip file (html)
+- push 2 files (json)
+- push zip file (json)
+- killed server at pid 38995
 ```
 
 # License
