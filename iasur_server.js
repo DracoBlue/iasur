@@ -18,20 +18,30 @@ if (process.argv.length < 3)
 }
 
 var config = {};
+var base_directory = process.cwd();
 
-if (fs.existsSync(__dirname + '/config.json'))
+if (fs.existsSync(base_directory + '/config.json'))
 {
-    config = JSON.parse(fs.readFileSync(__dirname + '/config.json').toString() || '{}');
+    config = JSON.parse(fs.readFileSync(base_directory + '/config.json').toString() || '{}');
 }
 
 var base_url = process.argv[2];
-var base_folders_folder = __dirname + '/folders/';
+var base_folders_folder = base_directory + '/folders/';
 var base_folders_url = base_url + 'folders/';
-var base_index_files_folder = __dirname + '/files/';
+var base_index_files_folder = base_directory + '/files/';
 var base_index_files_url = base_url + 'files/';
 config.theme = config.theme || 'default';
 
 app.set('view engine', 'twig');
+
+if (fs.existsSync(base_directory + '/views'))
+{
+    app.set('views', base_directory + '/views');
+}
+else
+{
+    app.set('views', __dirname + '/views');
+}
 
 app.set("twig options", {
     strict_variables: false
@@ -161,8 +171,15 @@ app.post('/zip-files', function (req, res)
 
 app.get('/files/:id', function(req, res)
 {
-    fs.readFile(base_index_files_folder + '/' + req.params.id + '.json', function (err, data) {
-        /* FIXME: handle err */
+    fs.readFile(base_index_files_folder + '/' + req.params.id + '.json', function (err, data)
+    {
+        if (err)
+        {
+            res.statusCode = 404;
+            res.send('Files not found');
+            return;
+        }
+
         data = JSON.parse(data.toString());
         res.render('themes/' + config.theme + '/files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur" });
     });
@@ -203,7 +220,6 @@ app.post('/files', function (req, res)
 });
 
 app.use('/folders', express.static(base_folders_folder));
-app.use('/static', express.static(__dirname + '/static'));
 
 var url_parts = url.parse(base_url);
 

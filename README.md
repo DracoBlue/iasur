@@ -63,6 +63,8 @@ Server running at http://127.0.0.1:32457/
 
 ## Changelog
 
+* dev
+  - made views, files and folders relative to `process.cwd()`
 * 1.0.0 (2014/03/23)
   - added option to create a theme
   - initial release
