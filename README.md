@@ -2,9 +2,8 @@
 
 A very thin web and api based file upload and destribution service.
 
-* Version: 0.1-dev
+* Latest Release: [![GitHub version](https://badge.fury.io/gh/DracoBlue%2Fiasur.png)](https://github.com/DracoBlue/iasur/releases)
 * Build-Status: [![Build Status](https://travis-ci.org/DracoBlue/iasur.png?branch=master)](https://travis-ci.org/DracoBlue/iasur)
-* Date: Not yet released
 * Official Site: http://dracoblue.net/
 
 iasur is copyright 2014 by DracoBlue http://dracoblue.net
@@ -42,6 +41,11 @@ Server running at http://127.0.0.1:32457/
 - killed server at pid 38995
 ```
 
+# Changelog
+
+* dev
+  - initial release
+  
 # License
 
 iasur is licensed under the terms of MIT.
