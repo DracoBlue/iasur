@@ -8,7 +8,7 @@ A very thin web and api based file upload and destribution service.
 
 iasur is copyright 2014 by DracoBlue http://dracoblue.net
 
-# Installation
+## Installation
 
 Installation will be available via npm. So long use the latest version from git.
 
@@ -18,7 +18,7 @@ $ cd iasur
 $ npm install
 ```
 
-# Usage
+## Usage
 
 Run the server with:
 
@@ -27,7 +27,27 @@ $ ./iasur_server.js http://127.0.0.1:1337/
 Server running at http://127.0.0.1:1337/
 ```
 
-# Run tests
+## Custom Name / Footer
+
+Modify `views/themes/default/{_header.twig,_footer.twig}` or create your own theme.
+
+## Custom Theme
+
+If you want to use/make a custom theme, copy the folder `views/themes/default` to `views/themes/mytheme`.
+
+Modify the files.
+
+Configure to run your theme, by adding a `config.json` to the iasur folder:
+
+```
+{
+  "theme": "mytheme"
+}
+```
+
+That's it!
+
+## Run tests
 
 ``` console
 $ make test
@@ -41,11 +61,12 @@ Server running at http://127.0.0.1:32457/
 - killed server at pid 38995
 ```
 
-# Changelog
+## Changelog
 
 * dev
+  - added option to create a theme
   - initial release
-  
-# License
+
+## License
 
 iasur is licensed under the terms of MIT.

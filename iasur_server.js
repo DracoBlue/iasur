@@ -17,11 +17,19 @@ if (process.argv.length < 3)
     return ;
 }
 
+var config = {};
+
+if (fs.existsSync(__dirname + '/config.json'))
+{
+    config = JSON.parse(fs.readFileSync(__dirname + '/config.json').toString() || '{}');
+}
+
 var base_url = process.argv[2];
 var base_folders_folder = __dirname + '/folders/';
 var base_folders_url = base_url + 'folders/';
 var base_index_files_folder = __dirname + '/files/';
 var base_index_files_url = base_url + 'files/';
+config.theme = config.theme || 'default';
 
 app.set('view engine', 'twig');
 
@@ -85,14 +93,14 @@ app.get('/upload/zip', function (req, res)
 {
     var content_type = req.accepts(['html', 'json']);
 
-    res.render('upload_zip', { "title": "Choose your file", "_title": "Upload one .zip / iasur", "_tab": "zip" });
+    res.render('themes/' + config.theme + '/upload_zip', { "title": "Choose your file", "_title": "Upload one .zip / iasur", "_tab": "zip" });
 });
 
 app.get('/upload/files', function (req, res)
 {
     var content_type = req.accepts(['html', 'json']);
 
-    res.render('upload_files', { "title": "Choose your files", "_title": "Upload files / iasur", "_tab": "files" });
+    res.render('themes/' + config.theme + '/upload_files', { "title": "Choose your files", "_title": "Upload files / iasur", "_tab": "files" });
 });
 
 var createIndexFileAndRedirect = function(folder_id, options, req, res)
@@ -156,7 +164,7 @@ app.get('/files/:id', function(req, res)
     fs.readFile(base_index_files_folder + '/' + req.params.id + '.json', function (err, data) {
         /* FIXME: handle err */
         data = JSON.parse(data.toString());
-        res.render('files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur", "_tab": "zip" });
+        res.render('themes/' + config.theme + '/files', { "folder_base_url": base_folders_url + req.params.id + '/', "title": data.title, "description": data.description, "entries": data.entries, "_title": "Upload one .zip / iasur" });
     });
 })
 

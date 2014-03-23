@@ -1,4 +1,4 @@
-{% include "_header.twig" %}
+{% include "themes/default/_header.twig" %}
           <div class="inner cover">
               {% if title is defined %}
             <h1 class="cover-heading">{{ title | escape }}</h1>
@@ -11,12 +11,12 @@
 <table class="table">
     {% for entry in entries %}
     <tr>
-        <td>{{ entry.name | escape }}</td>
+        <td><span class="glyphicon glyphicon-file"></span>  {{ entry.name | escape }}</td>
         <td>{{ entry.size | escape }} bytes</td>
-        <td><a href="{{ folder_base_url | escape }}{{ entry.name | escape }}">Download</a></td>
+        <td><a class="btn btn-primary  btn-xs" href="{{ folder_base_url | escape }}{{ entry.name | escape }}"><span class="glyphicon glyphicon-download"></span> Download</a></td>
     </tr>
     {% endfor %}
 </table>
 
-{% include "_footer.twig" %}
+{% include "themes/default/_footer.twig" %}
 

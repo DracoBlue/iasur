@@ -1,13 +1,13 @@
-{% include "_header.twig" %}
+{% include "themes/default/_header.twig" %}
           <div class="inner cover">
             <h1 class="cover-heading">{{ title }}</h1>
-            <p class="lead">Upload a single .zip file and make the contents accessible online.</p>
+            <p class="lead">Upload multiple files and make the contents accessible online.</p>
           </div>
 
-          <form role="form" method="POST" action="/zip-files" enctype="multipart/form-data">
+          <form role="form" method="POST" action="/files" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="exampleInputFile">Choose a .zip file</label>
-              <input name="file" type="file" required="required" id="exampleInputFile" accept="application/zip">
+              <label for="exampleInputFile">Choose some files (hold CTRL/CMD for multiple files!)</label>
+              <input name="files" type="file" required="required" id="exampleInputFile" multiple="multiple">
             </div>
             <div class="form-group">
               <label for="titleInput">Title (optional)</label>
@@ -19,5 +19,4 @@
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
-{% include "_footer.twig" %}
-
+{% include "themes/default/_footer.twig" %}
