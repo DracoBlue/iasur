@@ -63,7 +63,7 @@ Server running at http://127.0.0.1:32457/
 
 ## Changelog
 
-* dev
+* 1.0.0 (2014/03/23)
   - added option to create a theme
   - initial release
 
