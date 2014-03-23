@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_URL=http://127.0.0.1:32457
-./iasur_server.js $BASE_URL/ &
+./iasur_server.js serve $BASE_URL/ &
 PID=$!
 echo "- launched test server at $BASE_URL with pid $PID"
 sleep 1
