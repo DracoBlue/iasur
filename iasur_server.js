@@ -11,9 +11,7 @@ var twig = require("twig");
 var app = express();
 var base_directory = process.cwd();
 var base_folders_folder = base_directory + '/folders/';
-var base_folders_url = base_url + 'folders/';
 var base_index_files_folder = base_directory + '/files/';
-var base_index_files_url = base_url + 'files/';
 
 var iasur_version = 'dev';
 
@@ -85,6 +83,8 @@ else if (process.argv.length < 3)
 }
 
 var base_url = process.argv[3];
+var base_folders_url = base_url + 'folders/';
+var base_index_files_url = base_url + 'files/';
 
 app.set('view engine', 'twig');
 
