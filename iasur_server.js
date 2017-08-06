@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 var AdmZip = require('adm-zip');
 var express = require('express');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var fs = require("fs");
 var path = require("path");
 var url = require("url");
 var formidable = require('formidable');
 var twig = require("twig");
+var normalizeUrl = require('normalize-url');
 
 var app = express();
 var base_directory = process.cwd();
@@ -82,9 +83,9 @@ else if (process.argv.length < 3)
     return ;
 }
 
-var base_url = process.argv[3];
-var base_folders_url = base_url + 'folders/';
-var base_index_files_url = base_url + 'files/';
+var base_url = normalizeUrl(process.argv[3]);
+var base_folders_url = base_url + '/folders/';
+var base_index_files_url = base_url + '/files/';
 
 app.set('view engine', 'twig');
 

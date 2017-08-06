@@ -5,13 +5,16 @@
   "scripts": {
     "test": "make test"
   },
-  "bin" : { "iasur" : "./iasur_server.js" },
+  "bin": {
+    "iasur": "./iasur_server.js"
+  },
   "dependencies": {
-      "adm-zip": "=>4.4.0 <4.5.0",
-      "twig": "=>0.7.0 <0.8.0",
-      "express": "3.x",
-      "node-uuid": "=>1.4.1 <1.5.0",
-      "formidable": "=>1.0.14 <1.1.0"
+    "adm-zip": "0.4.7",
+    "express": "3.x",
+    "formidable": "1.0.17",
+    "normalize-url": "^1.9.1",
+    "twig": "1.10.5",
+    "uuid": "3.1.0"
   },
   "repository": "https://github.com/DracoBlue/iasur.git",
   "author": "DracoBlue",
