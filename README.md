@@ -10,6 +10,8 @@ iasur is copyright 2014 by DracoBlue http://dracoblue.net
 
 ## Installation
 
+### npm
+
 Install from npm (global):
 
 ``` console
@@ -21,6 +23,19 @@ or local:
 ``` console
 $ npm install iasur
 ```
+
+### docker
+
+You can run iasur directly from docker:
+
+```console
+$ docker run --rm -p5000:80 -v`pwd`:/usr/src/app dracoblue/iasur
+```
+
+It will be accessible at http://127.0.0.1:5000 and there is no further installation necessary.
+
+You might override the internal port with the `PORT` environment variable.
+### git
 
 You might fetch the latest version from git:
 

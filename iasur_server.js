@@ -278,5 +278,5 @@ app.use('/folders', express.static(base_folders_folder));
 
 var url_parts = url.parse(base_url);
 
-app.listen(url_parts['port'] || 80, url_parts['hostname']);
+app.listen(url_parts['port'] || process.env.PORT || 80, url_parts['hostname'] || '0.0.0.0');
 console.log('Server running at ' + base_url);
