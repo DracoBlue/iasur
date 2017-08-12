@@ -103,6 +103,8 @@ Server running at http://127.0.0.1:32457/
 
 ## Changelog
 
+* 1.3.0 (2017/08/12)
+  - added docker support
 * 1.2.0 (2017/08/06)
   - normalize base url #2
 * 1.1.0 (2014/03/23)
