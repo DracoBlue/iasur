@@ -1,12 +1,12 @@
 # iasur
 
-A very thin web and api based file upload and destribution service.
+A very thin web and api based file upload and distribution service.
 
 * Latest Release: [![GitHub version](https://badge.fury.io/gh/DracoBlue%2Fiasur.png)](https://github.com/DracoBlue/iasur/releases)
 * Build-Status: [![Build Status](https://travis-ci.org/DracoBlue/iasur.png?branch=master)](https://travis-ci.org/DracoBlue/iasur)
 * Official Site: http://dracoblue.net/
 
-iasur is copyright 2014 by DracoBlue http://dracoblue.net
+iasur is copyright 2014-2017 by DracoBlue http://dracoblue.net
 
 ## Installation
 
